@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint",
     "express": "vue-cli-service express:watch",
     "express:run": "vue-cli-service express:run",
-    "start": "node server.js"
+    "start": "node srv/server.js"
   },
   "dependencies": {
     "@tailwindcss/postcss7-compat": "^2.0.2",

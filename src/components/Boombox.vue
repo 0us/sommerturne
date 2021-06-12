@@ -1,5 +1,5 @@
 <template>
-  <div class="secret fade-in container mx-auto" style="  pointer-events: none !important;">
+  <div class="secret fade-in container mx-auto" style="pointer-events: none !important;">
     <youtube :video-id="videoId"
              :player-vars="playerVars"
              ref="youtube"
@@ -8,7 +8,7 @@
              width="0"
              height="0"
     />
-    <img src="/boombox.gif" alt="boombox" class="mx-auto"/>
+    <img src="/boombox.gif" alt="boombox" class="mx-auto relative"/>
 
     <!--    <iframe src="https://www.youtube.com/embed/mEOSy9lysj8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
   </div>

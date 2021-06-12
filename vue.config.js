@@ -11,5 +11,12 @@ module.exports = {
                         "X-Requested-With, content-type, Authorization"
                 }
         }
+    },
+
+    pluginOptions: {
+      express: {
+        shouldServeApp: true,
+        serverDir: './srv'
+      }
     }
 }

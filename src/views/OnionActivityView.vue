@@ -15,7 +15,7 @@
             />
             <Explosion class="bowling-kjegle" />
         </div>
-        <TurboButton title="Bowl" :action="bowl" />
+        <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
     </div>
 </template>
 

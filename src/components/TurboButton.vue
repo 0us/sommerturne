@@ -18,7 +18,7 @@
                 rounded
             "
             @click="action"
-            :disabled="showBowling"
+            :disabled="disabled"
         >
             {{ title }}
         </button>
@@ -37,6 +37,10 @@ export default {
             default() {
                 return {}
             },
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
 }

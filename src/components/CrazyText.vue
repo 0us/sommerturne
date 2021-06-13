@@ -1,6 +1,7 @@
 <template>
   <span
       ref="text"
+      :class="getCrazyLevel()"
       class="
       hello
       bounce-enter-active
@@ -31,8 +32,8 @@ export default Vue.extend({
     this.setCrazyLevel()
   },
   methods: {
-    setCrazyLevel() {
-      this.$refs.text.className += "crazy" + this.level
+    getCrazyLevel() {
+      return "crazy" + this.level
     },
   }
 });
@@ -93,7 +94,7 @@ export default Vue.extend({
     transform: scale(1.1) skew(5deg, -5deg);
   }
   75% {
-    transform: scale(0.8)  skew(-10deg, -2.5deg);
+    transform: scale(0.8) skew(-10deg, -2.5deg);
   }
   100% {
     transform: scale(1) skew(0deg, 0deg);

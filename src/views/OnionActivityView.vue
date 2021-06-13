@@ -1,5 +1,6 @@
 <template>
     <div class="bowling-container">
+        <CrazyText :msg="currentCrazyText" level="2" />
         <div v-if="showBowling" class="bowling-bane">
             <img
                 ref="bowlingBall"
@@ -15,29 +16,11 @@
             />
             <Explosion class="bowling-kjegle" />
         </div>
-        <div
-            class="
-                turbo-button-bg
-                bg-gradient-to-r
-                from-green-500
-                to-yellow-500
-                rounded
-            "
-        >
-            <button
-                class="
-                    turbo-button
-                    bg-gradient-to-r
-                    from-yellow-500
-                    to-green-500
-                    text-white
-                    rounded
-                "
-                @click="bowl"
-                :disabled="showBowling"
-            >
-                Bowl
-            </button>
+        <div class="bottom-container">
+            <div class="turbo-counter text-white">
+                {{ killCount }}
+            </div>
+            <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
         </div>
     </div>
 </template>
@@ -45,18 +28,40 @@
 <script>
 import Explosion from '@/components/Explosion.vue'
 import { eventHub } from '../main'
+import TurboButton from '@/components/TurboButton.vue'
+import CrazyText from '@/components/CrazyText.vue'
 
 const ANIMATION_DURATION = 500
 const IMG_SIZE = 100
 export default {
-    components: { Explosion },
+    components: { Explosion, TurboButton, CrazyText },
     data() {
         return {
             showBowling: false,
+            showCrazyText: false,
+            currentCrazyText: '',
             kjegleIsKill: false,
             kjegleStartPos: 0,
+            killCount: 0,
+            fxSounds: {
+                1: new Audio('fx/head_shot.mp3'),
+                2: new Audio('fx/double_kill.mp3'),
+                3: new Audio('fx/triple_kill.mp3'),
+                4: new Audio('fx/multi_kill.mp3'),
+                5: new Audio('fx/monster_kill.mp3'),
+                10: new Audio('fx/god_like.mp3'),
+            },
+            crazyTexts: {
+                1: 'Head Shot!',
+                2: 'Double Kill!',
+                3: 'Triple Kill!',
+                4: 'Multi Kill!',
+                5: 'Monster Kill!',
+                10: 'God Like!',
+            },
         }
     },
+    mounted() {},
     methods: {
         explode() {
             eventHub.$emit('explosion')
@@ -92,6 +97,19 @@ export default {
         cleanupBowling(intervalId) {
             this.showBowling = false
             this.kjegleIsKill = false
+            this.killCount++
+
+            // Show crazyText
+            this.showCrazyText = true
+            this.currentCrazyText = this.crazyTexts[this.killCount]
+            setTimeout(() => {
+                this.showCrazyText = false
+            }, 500)
+
+            // If killstreak is achieved, play sound
+            const fx = this.fxSounds[this.killCount]
+            fx.play()
+
             clearInterval(intervalId)
         },
     },
@@ -106,27 +124,19 @@ export default {
     height: 100%;
 }
 
-.turbo-button-bg {
+.bottom-container {
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    margin-top: auto;
-    padding: 0.1rem;
     margin-bottom: 2rem;
-    filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.5));
+    margin-top: auto;
 }
 
-.turbo-button {
-    width: 20rem;
-    height: 10rem;
+.turbo-counter {
+    left: 0;
+    position: absolute;
+    margin-left: 2rem;
     font-size: 5rem;
-}
-
-.turbo-button:disabled {
-    cursor: default;
-    -webkit-box-shadow: inset 1px 1px 10px #333;
-    -moz-box-shadow: inset 1px 1px 10px #333;
-    box-shadow: inset 1px 1px 10px #333;
 }
 
 .bowling-bane {

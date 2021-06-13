@@ -15,41 +15,19 @@
             />
             <Explosion class="bowling-kjegle" />
         </div>
-        <div
-            class="
-                turbo-button-bg
-                bg-gradient-to-r
-                from-green-500
-                to-yellow-500
-                rounded
-            "
-        >
-            <button
-                class="
-                    turbo-button
-                    bg-gradient-to-r
-                    from-yellow-500
-                    to-green-500
-                    text-white
-                    rounded
-                "
-                @click="bowl"
-                :disabled="showBowling"
-            >
-                Bowl
-            </button>
-        </div>
+        <TurboButton title="Bowl" :action="bowl" />
     </div>
 </template>
 
 <script>
 import Explosion from '@/components/Explosion.vue'
 import { eventHub } from '../main'
+import TurboButton from '@/components/TurboButton.vue'
 
 const ANIMATION_DURATION = 500
 const IMG_SIZE = 100
 export default {
-    components: { Explosion },
+    components: { Explosion, TurboButton },
     data() {
         return {
             showBowling: false,
@@ -104,29 +82,6 @@ export default {
     flex-direction: column;
     align-items: center;
     height: 100%;
-}
-
-.turbo-button-bg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: auto;
-    padding: 0.1rem;
-    margin-bottom: 2rem;
-    filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.5));
-}
-
-.turbo-button {
-    width: 20rem;
-    height: 10rem;
-    font-size: 5rem;
-}
-
-.turbo-button:disabled {
-    cursor: default;
-    -webkit-box-shadow: inset 1px 1px 10px #333;
-    -moz-box-shadow: inset 1px 1px 10px #333;
-    box-shadow: inset 1px 1px 10px #333;
 }
 
 .bowling-bane {

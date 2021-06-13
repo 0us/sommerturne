@@ -7,11 +7,11 @@
              @ready="forcePlayVideo"
              width="0"
              height="0"
+             id="boombox"
     />
     <img src="/boombox.gif" alt="boombox" class="mx-auto relative"/>
-
-    <!--    <iframe src="https://www.youtube.com/embed/mEOSy9lysj8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
   </div>
+
 </template>
 
 <script>
@@ -35,8 +35,11 @@ export default {
   },
   methods: {
     forcePlayVideo() {
+      this.player.setVolume(10)
       setInterval(() => {
-        this.playVideo()
+        if (this) {
+          this.playVideo()
+        }
       }, 1000)
     },
     playVideo() {

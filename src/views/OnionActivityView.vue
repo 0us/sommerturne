@@ -1,5 +1,5 @@
 <template>
-    <div class="view-container">
+    <div class="bowling-container">
         <div v-if="showBowling" class="bowling-bane">
             <img
                 ref="bowlingBall"
@@ -94,11 +94,11 @@ export default {
 </script>
 
 <style scoped>
-.view-container {
+.bowling-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 80%;
+    height: 100%;
 }
 
 .turbo-button-bg {
@@ -107,6 +107,7 @@ export default {
     align-items: center;
     margin-top: auto;
     padding: 0.1rem;
+    margin-bottom: 2rem;
     filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.5));
 }
 

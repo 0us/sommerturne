@@ -1,13 +1,25 @@
 <template>
     <Background id="app" style="z-index: -10">
-        <router-link to="onion_activity">
-            <img
-                class="p-2 turbo-link"
-                src="bowling.png"
-                alt="bowling"
-                width="50px"
-            />
-        </router-link>
+        <div class="flex flex-row">
+            <router-link to="/">
+                <img
+                    class="p-2 turbo-link"
+                    src="house.png"
+                    alt="house"
+                    width="50px"
+                />
+            </router-link>
+
+            <router-link to="onion_activity">
+                <img
+                    class="p-2 turbo-link"
+                    src="bowling.png"
+                    alt="bowling"
+                    width="50px"
+                />
+            </router-link>
+        </div>
+
         <router-view></router-view>
     </Background>
 </template>

@@ -12,7 +12,7 @@
                     ref="bowlingBall"
                     class="bowling-ball"
                     src="onion.png"
-                    alt=""
+                    :style="calcBowlingAnimation()"
                 />
                 <img
                     v-if="!kjegleIsKill"
@@ -30,6 +30,19 @@
             </div>
 
             <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
+
+            <div class="turbo-slider-container text-white">
+                <VueSlider
+                    :min="200"
+                    :max="4000"
+                    :interval="100"
+                    :height="sliderHeight"
+                    contained
+                    direction="btt"
+                    v-model="bowlingAnimationDuration"
+                />
+                <span>Speed</span>
+            </div>
         </div>
     </div>
 </template>
@@ -39,13 +52,17 @@ import Explosion from '@/components/Explosion.vue'
 import { eventHub } from '../main'
 import TurboButton from '@/components/TurboButton.vue'
 import CrazyText from '@/components/CrazyText.vue'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
 const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 export default {
-    components: { Explosion, TurboButton, CrazyText },
+    components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
+        const screenWidth = document.body.clientWidth
+
         return {
             showBowling: false,
             showCrazyText: false,
@@ -69,10 +86,22 @@ export default {
                 5: 'Monster Kill!',
                 10: 'God Like!',
             },
+            bowlingAnimationDuration: 2000,
+            sliderHeight: screenWidth <= 600 ? 75 : 150,
         }
     },
-    mounted() {},
+    created() {
+        window.addEventListener('resize', this.handleScreenResize)
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.handleScreenResize)
+    },
     methods: {
+        handleScreenResize() {
+            // Handle slider height
+            const screenWidth = document.body.clientWidth
+            this.sliderHeight = screenWidth <= 600 ? 50 : 150
+        },
         explode() {
             eventHub.$emit('explosion')
         },
@@ -122,6 +151,9 @@ export default {
 
             clearInterval(intervalId)
         },
+        calcBowlingAnimation() {
+            return `animation: move_left_to_right ${this.bowlingAnimationDuration}ms linear forwards, spin 2s;`
+        },
     },
 }
 </script>
@@ -160,6 +192,22 @@ export default {
     }
 }
 
+.turbo-slider-container {
+    right: 0;
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 2rem;
+}
+
+@media (max-width: 600px) {
+    .turbo-slider {
+    }
+}
+
 .bowling-bane {
     display: flex;
     margin-top: 5rem;
@@ -170,8 +218,6 @@ export default {
 .bowling-ball {
     position: fixed;
     width: 100px;
-
-    animation: move_left_to_right 2000ms linear forwards, spin 2s;
 }
 
 .bowling-kjegle {

@@ -5,7 +5,7 @@
             v-for="i in new Array(20)"
             :key="i"
         />
-        <CrazyText msg="Det Er Sommer I Hele Verden" />
+        <CrazyText msg="Det Er Sommer I Hele Verden" level="0" />
     </div>
 </template>
 

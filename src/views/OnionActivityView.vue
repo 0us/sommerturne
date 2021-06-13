@@ -1,21 +1,5 @@
 <template>
     <div class="view-container">
-        <button
-            class="
-                turbo-button
-                bg-gradient-to-r
-                from-green-400
-                to-blue-500
-                text-white
-                p-5
-                rounded
-            "
-            @click="bowl"
-            :disabled="showBowling"
-        >
-            Bowl
-        </button>
-
         <div v-if="showBowling" class="bowling-bane">
             <img
                 ref="bowlingBall"
@@ -31,6 +15,30 @@
             />
             <Explosion class="bowling-kjegle" />
         </div>
+        <div
+            class="
+                turbo-button-bg
+                bg-gradient-to-r
+                from-green-500
+                to-yellow-500
+                rounded
+            "
+        >
+            <button
+                class="
+                    turbo-button
+                    bg-gradient-to-r
+                    from-yellow-500
+                    to-green-500
+                    text-white
+                    rounded
+                "
+                @click="bowl"
+                :disabled="showBowling"
+            >
+                Bowl
+            </button>
+        </div>
     </div>
 </template>
 
@@ -38,7 +46,7 @@
 import Explosion from '@/components/Explosion.vue'
 import { eventHub } from '../main'
 
-const ANIMATION_DURATION = 3000
+const ANIMATION_DURATION = 500
 const IMG_SIZE = 100
 export default {
     components: { Explosion },
@@ -59,18 +67,18 @@ export default {
 
             const intervalId = setInterval(() => {
                 const pos = this.getBallPos() + IMG_SIZE
-                if (pos >= this.kjegleStartPos) this.killKjegle()
-            }, 60)
+                if (pos >= this.kjegleStartPos) {
+                    this.killKjegle()
 
-            // Cleanup when done
-            setTimeout(() => {
-                this.cleanupBowling(intervalId)
-            }, ANIMATION_DURATION)
+                    setTimeout(() => {
+                        this.cleanupBowling(intervalId)
+                    }, ANIMATION_DURATION)
+                }
+            }, 60)
         },
         getBallPos() {
             const ball = this.$refs.bowlingBall
             return ball.offsetLeft
-            // output.innerHTML = 'offsetTop: ' + target.offsetTop
         },
         killKjegle() {
             this.kjegleIsKill = true
@@ -90,15 +98,29 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 80%;
+}
+
+.turbo-button-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    padding: 0.1rem;
+    filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.5));
 }
 
 .turbo-button {
-    max-width: 6rem;
+    width: 20rem;
+    height: 10rem;
+    font-size: 5rem;
 }
 
 .turbo-button:disabled {
     cursor: default;
-    color: grey !important;
+    -webkit-box-shadow: inset 1px 1px 10px #333;
+    -moz-box-shadow: inset 1px 1px 10px #333;
+    box-shadow: inset 1px 1px 10px #333;
 }
 
 .bowling-bane {

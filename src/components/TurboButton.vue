@@ -51,9 +51,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: auto;
     padding: 0.1rem;
-    margin-bottom: 2rem;
     filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.5));
 }
 

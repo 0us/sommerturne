@@ -1,6 +1,6 @@
 <template>
     <div class="bowling-container">
-        <CrazyText :msg="currentCrazyText" level="2" />
+        <CrazyText v-if="showCrazyText" :msg="currentCrazyText" level="2" />
         <div v-if="showBowling" class="bowling-bane">
             <img
                 ref="bowlingBall"
@@ -20,6 +20,7 @@
             <div class="turbo-counter text-white">
                 {{ killCount }}
             </div>
+
             <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
         </div>
     </div>
@@ -32,6 +33,7 @@ import TurboButton from '@/components/TurboButton.vue'
 import CrazyText from '@/components/CrazyText.vue'
 
 const ANIMATION_DURATION = 500
+const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 export default {
     components: { Explosion, TurboButton, CrazyText },
@@ -87,8 +89,7 @@ export default {
             }, 60)
         },
         getBallPos() {
-            const ball = this.$refs.bowlingBall
-            return ball.offsetLeft
+            return this.$refs.bowlingBall.offsetLeft
         },
         killKjegle() {
             this.kjegleIsKill = true
@@ -104,11 +105,12 @@ export default {
             this.currentCrazyText = this.crazyTexts[this.killCount]
             setTimeout(() => {
                 this.showCrazyText = false
-            }, 500)
+                this.currentCrazyText = ''
+            }, CRAZY_TEXT_DURATION)
 
             // If killstreak is achieved, play sound
             const fx = this.fxSounds[this.killCount]
-            fx.play()
+            if (fx) fx.play()
 
             clearInterval(intervalId)
         },

@@ -1,21 +1,29 @@
 <template>
     <div class="bowling-container">
-        <CrazyText v-if="showCrazyText" :msg="currentCrazyText" level="2" />
-        <div v-if="showBowling" class="bowling-bane">
-            <img
-                ref="bowlingBall"
-                class="bowling-ball"
-                src="onion.png"
-                alt=""
-            />
-            <img
-                v-if="!kjegleIsKill"
-                class="bowling-kjegle"
-                src="bowling_kjegle.png"
-                alt=""
-            />
-            <Explosion class="bowling-kjegle" />
+        <CrazyText
+            v-if="showCrazyText"
+            :msg="currentCrazyText"
+            level="2"
+            class="floating-text"
+        />
+        <div class="bowling-bane">
+            <div v-if="showBowling">
+                <img
+                    ref="bowlingBall"
+                    class="bowling-ball"
+                    src="onion.png"
+                    alt=""
+                />
+                <img
+                    v-if="!kjegleIsKill"
+                    class="bowling-kjegle"
+                    src="bowling_kjegle.png"
+                    alt=""
+                />
+                <Explosion class="bowling-kjegle" />
+            </div>
         </div>
+
         <div class="bottom-container">
             <div class="turbo-counter text-white">
                 {{ killCount }}
@@ -126,6 +134,10 @@ export default {
     height: 100%;
 }
 
+.floating-text {
+    position: absolute;
+}
+
 .bottom-container {
     display: flex;
     flex-direction: row;
@@ -141,10 +153,18 @@ export default {
     font-size: 5rem;
 }
 
+@media (max-width: 600px) {
+    .turbo-counter {
+        margin-left: 1rem;
+        font-size: 3rem;
+    }
+}
+
 .bowling-bane {
     display: flex;
     margin-top: 5rem;
     width: 100%;
+    height: 100%;
 }
 
 .bowling-ball {

@@ -1,0 +1,9 @@
+@keyframes move_left_to_right {
+    0% {
+        left: 0;
+    }
+    100% {
+        left: 100%;
+        display: none;
+    }
+}

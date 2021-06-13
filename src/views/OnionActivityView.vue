@@ -59,6 +59,8 @@ const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 
+const KILL_COUNT_MAX = 10
+
 export default {
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
@@ -71,7 +73,6 @@ export default {
             kjegleIsKill: false,
             kjegleStartPos: 0,
             killCount: 0,
-            fxBowlingStrike: new Audio('fx/bowling_pins.mp3'),
             fxKillStreakSounds: {
                 1: new Audio('fx/head_shot.mp3'),
                 2: new Audio('fx/double_kill.mp3'),
@@ -87,6 +88,7 @@ export default {
                 4: 'Multi Kill!',
                 5: 'Monster Kill!',
                 10: 'God Like!',
+                n: 'Ha en fortsatt fin sommer!',
             },
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
@@ -132,8 +134,11 @@ export default {
         },
         killKjegle() {
             this.kjegleIsKill = true
-            this.fxBowlingStrike.play()
+            this.playBowlingPinSound()
             this.explode()
+        },
+        async playBowlingPinSound() {
+            new Audio('fx/bowling_pins.mp3').play()
         },
         cleanupBowling(intervalId) {
             this.showBowling = false
@@ -143,6 +148,9 @@ export default {
             // Show crazyText
             this.showCrazyText = true
             this.currentCrazyText = this.crazyTexts[this.killCount]
+            if (this.killCount > KILL_COUNT_MAX) {
+                this.currentCrazyText = this.crazyTexts['n']
+            }
             setTimeout(() => {
                 this.showCrazyText = false
                 this.currentCrazyText = ''

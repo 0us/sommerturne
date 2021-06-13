@@ -28,9 +28,6 @@ export default Vue.extend({
   data() {
     return {}
   },
-  mounted() {
-    this.setCrazyLevel()
-  },
   methods: {
     getCrazyLevel() {
       return "crazy" + this.level

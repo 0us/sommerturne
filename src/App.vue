@@ -1,6 +1,6 @@
 <template>
     <Background id="app" style="z-index: -10">
-        <div class="flex flex-row">
+        <div class="turbo-nav flex flex-row">
             <router-link to="/">
                 <img
                     class="p-2 spin"
@@ -19,19 +19,25 @@
                 />
             </router-link>
         </div>
-
-        <router-view></router-view>
+        <Content>
+            <Boombox />
+            <router-view></router-view>
+        </Content>
     </Background>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Background from '@/components/Background.vue'
+import Content from '@/components/Content.vue'
+import Boombox from '@/components/Boombox.vue'
 
 export default Vue.extend({
     name: 'App',
     components: {
         Background,
+        Boombox,
+        Content,
     },
 })
 </script>
@@ -44,5 +50,13 @@ export default Vue.extend({
     font-family: Inter, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.turbo-nav {
+    height: 10vh;
 }
 </style>

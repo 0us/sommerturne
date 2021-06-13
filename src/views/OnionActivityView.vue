@@ -40,14 +40,13 @@ import { eventHub } from '../main'
 
 const ANIMATION_DURATION = 3000
 const IMG_SIZE = 100
-const kjegleStartPos = document.body.clientWidth - IMG_SIZE
-
 export default {
     components: { Explosion },
     data() {
         return {
             showBowling: false,
             kjegleIsKill: false,
+            kjegleStartPos: 0,
         }
     },
     methods: {
@@ -56,10 +55,11 @@ export default {
         },
         bowl() {
             this.showBowling = true
+            this.kjegleStartPos = document.body.clientWidth - IMG_SIZE
 
             const intervalId = setInterval(() => {
                 const pos = this.getBallPos() + IMG_SIZE
-                if (pos >= kjegleStartPos) this.killKjegle()
+                if (pos >= this.kjegleStartPos) this.killKjegle()
             }, 60)
 
             // Cleanup when done

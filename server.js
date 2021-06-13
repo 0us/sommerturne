@@ -1,17 +1,17 @@
-const express = require('express')
-const path = require('path')
-const serveStatic = require('serve-static')
-const history = require('connect-history-api-fallback')
-const port = process.env.PORT || 5000
+const express = require('express');
+const path = require('path');
+const serveStatic = require('serve-static');
+const history = require('connect-history-api-fallback');
 
-express()
-    // @ts-ignore
-    .use(serveStatic(path.join(__dirname, 'dist')))
-    .use(
-        history({
-            disableDotRule: true,
-            verbose: true,
-        })
-    )
-    .use(serveStatic(path.join(__dirname, 'dist')))
-    .listen(port, () => console.log(`Listening on ${port}`))
+const app = express();
+const port = process.env.PORT || 5000;
+
+// @ts-ignore
+app.use(serveStatic(path.join(__dirname, 'dist')));
+app.use(
+    history({
+        disableDotRule: true,
+        verbose: true,
+    })
+);
+app.listen(port, () => console.log(`Listening on ${port}`));

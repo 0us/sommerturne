@@ -58,6 +58,7 @@ import 'vue-slider-component/theme/antd.css'
 const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
+
 export default {
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
@@ -70,7 +71,8 @@ export default {
             kjegleIsKill: false,
             kjegleStartPos: 0,
             killCount: 0,
-            fxSounds: {
+            fxBowlingStrike: new Audio('fx/bowling_pins.mp3'),
+            fxKillStreakSounds: {
                 1: new Audio('fx/head_shot.mp3'),
                 2: new Audio('fx/double_kill.mp3'),
                 3: new Audio('fx/triple_kill.mp3'),
@@ -130,6 +132,7 @@ export default {
         },
         killKjegle() {
             this.kjegleIsKill = true
+            this.fxBowlingStrike.play()
             this.explode()
         },
         cleanupBowling(intervalId) {
@@ -146,7 +149,7 @@ export default {
             }, CRAZY_TEXT_DURATION)
 
             // If killstreak is achieved, play sound
-            const fx = this.fxSounds[this.killCount]
+            const fx = this.fxKillStreakSounds[this.killCount]
             if (fx) fx.play()
 
             clearInterval(intervalId)

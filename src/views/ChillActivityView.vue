@@ -41,14 +41,16 @@ export default {
   },
   mounted() {
     this.coolAudio.forEach((audio) => {
-      audio.addEventListener("ended", () => {
-        this.showSun = false
-      })
+      audio.addEventListener("ended", this.disableSun)
+    })
+  },
+  beforeDestroy() {
+    this.coolAudio.forEach((audio) => {
+      audio.removeEventListener("ended", this.disableSun)
     })
   },
   methods: {
     randomChillFx() {
-
       if (this.currentAudio != null) {
         this.currentAudio.pause()
         this.currentAudio.currentTime = 0
@@ -63,7 +65,9 @@ export default {
         this.showSun = true
         this.currentAudio.play()
       }
-
+    },
+    disableSun() {
+      this.showSun = false
     }
   }
 }

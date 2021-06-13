@@ -1,23 +1,9 @@
 <template>
     <Background id="app" style="z-index: -10">
         <div class="turbo-nav flex flex-row">
-            <router-link to="/">
-                <img
-                    class="p-2 spin"
-                    src="house.png"
-                    alt="house"
-                    width="50px"
-                />
-            </router-link>
-
-            <router-link to="onion_activity">
-                <img
-                    class="p-2 spin"
-                    src="bowling.png"
-                    alt="bowling"
-                    width="50px"
-                />
-            </router-link>
+          <NavButton src="house.png" path="/"/>
+          <NavButton src="bowling.png" path="onion_activity"/>
+          <NavButton src="chill.png" path="chill_activity"/>
         </div>
         <Content>
             <Boombox />
@@ -31,10 +17,12 @@ import Vue from 'vue'
 import Background from '@/components/Background.vue'
 import Content from '@/components/Content.vue'
 import Boombox from '@/components/Boombox.vue'
+import NavButton from "@/components/NavButton.vue";
 
 export default Vue.extend({
     name: 'App',
     components: {
+      NavButton,
         Background,
         Boombox,
         Content,

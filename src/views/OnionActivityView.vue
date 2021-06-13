@@ -64,15 +64,20 @@ export default {
         bowl() {
             this.showBowling = true
             this.kjegleStartPos = document.body.clientWidth - IMG_SIZE
+            let locked = false
 
             const intervalId = setInterval(() => {
                 const pos = this.getBallPos() + IMG_SIZE
-                if (pos >= this.kjegleStartPos) {
-                    this.killKjegle()
 
-                    setTimeout(() => {
-                        this.cleanupBowling(intervalId)
-                    }, ANIMATION_DURATION)
+                if (pos >= this.kjegleStartPos) {
+                    if (locked === false) {
+                        locked = true
+                        this.killKjegle()
+
+                        setTimeout(() => {
+                            this.cleanupBowling(intervalId)
+                        }, ANIMATION_DURATION)
+                    }
                 }
             }, 60)
         },

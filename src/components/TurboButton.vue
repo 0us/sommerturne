@@ -61,6 +61,14 @@ export default {
     font-size: 5rem;
 }
 
+@media (max-width: 600px) {
+    .turbo-button {
+        width: 10rem;
+        height: 5rem;
+        font-size: 2rem;
+    }
+}
+
 .turbo-button:disabled {
     cursor: default;
     -webkit-box-shadow: inset 1px 1px 10px #333;

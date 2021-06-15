@@ -18,6 +18,12 @@ import Background from '@/components/Background.vue'
 import Content from '@/components/Content.vue'
 import Boombox from '@/components/Boombox.vue'
 import NavButton from "@/components/NavButton.vue";
+import VueSocketIO from 'vue-socket.io';
+
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: "http://localhost:5000"
+}));
 
 export default Vue.extend({
     name: 'App',

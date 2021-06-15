@@ -62,6 +62,11 @@ const IMG_SIZE = 100
 const KILL_COUNT_MAX = 10
 
 export default {
+    sockets: {
+        connect: function () {
+            console.log('socket connected')
+        },
+    },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
         const screenWidth = document.body.clientWidth
@@ -144,6 +149,7 @@ export default {
             this.showBowling = false
             this.kjegleIsKill = false
             this.killCount++
+            this.$socket.emit('send_score', this.killCount.toString())
 
             // Show crazyText
             this.showCrazyText = true

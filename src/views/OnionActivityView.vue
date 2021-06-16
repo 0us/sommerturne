@@ -66,6 +66,10 @@ export default {
         connect: function () {
             console.log('socket connected')
         },
+        broadcast: function (message) {
+            console.log("Broadcast");
+            console.log(message);
+        }
     },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {

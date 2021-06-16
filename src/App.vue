@@ -20,9 +20,12 @@ import Boombox from '@/components/Boombox.vue'
 import NavButton from "@/components/NavButton.vue";
 import VueSocketIO from 'vue-socket.io';
 
+const url = `${window.location.protocol}//${window.location.hostname}`;
+const port = process.env.PORT || 5000;
+
 Vue.use(new VueSocketIO({
-    debug: true,
-    connection: "http://localhost:5000"
+    debug: false,
+    connection: `${url}:${port}`
 }));
 
 export default Vue.extend({

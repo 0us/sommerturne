@@ -15,20 +15,24 @@ const server = app.use(serveStatic(path.join(__dirname, 'dist')))
   )
   .listen(port, () => console.log(`Listening on ${port}`));
 
+const ioConfig = { allowEIO3: true };
 
-const io = require('socket.io')(server, {
-  allowEIO3: true // false by default
-});
+if (port !== process.env.PORT) {
+  ioConfig.cors = { credentials: true, origin: "http://localhost:8080", methods: ["GET", "POST"] };
+};
 
-io.on('connection', (socket) => {
-  socket.on('disconnect', () => {
-    console.log("A user disconnected");
+const io = require('socket.io')(server, ioConfig);
+
+io.on('connection', (client) => {
+  client.on('disconnect', () => {
+    console.log("User ", client.id, " disconnected");
   });
 
-  socket.on('send_score', (socket) => {
+  client.on('send_score', (score) => {
     console.log("message");
-    console.log(socket);
+    console.log(score);
+    io.sockets.emit('broadcast', { user: client.id, score })
   })
 
-  console.log("A user connected");
+  console.log("User ", client.id, " connected");
 });

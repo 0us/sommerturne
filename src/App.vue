@@ -21,7 +21,7 @@ import NavButton from "@/components/NavButton.vue";
 import VueSocketIO from 'vue-socket.io';
 
 const url = `${window.location.protocol}//${window.location.hostname}`;
-const port = window.location.port === "80" ? 80 : 5000;
+const port = window.location.port === "8080" ? 5000 : "";
 
 Vue.use(new VueSocketIO({
     debug: false,

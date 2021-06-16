@@ -24,6 +24,10 @@
             </div>
         </div>
 
+        <div v-for="score in scoreList" :key="score.user">
+            <p>{{ score.user }}: {{ score.score }} kills</p>
+        </div>
+
         <div class="bottom-container">
             <div class="turbo-counter text-white">
                 {{ killCount }}
@@ -67,8 +71,7 @@ export default {
             console.log('socket connected')
         },
         broadcast: function (message) {
-            console.log("Broadcast");
-            console.log(message);
+            this.updateUserScore(message);
         }
     },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
@@ -101,6 +104,7 @@ export default {
             },
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
+            scoreList: [],
         }
     },
     created() {
@@ -175,6 +179,14 @@ export default {
         calcBowlingAnimation() {
             return `animation: move_left_to_right ${this.bowlingAnimationDuration}ms linear forwards, spin 2s;`
         },
+        updateUserScore(userScore) {
+            const scoreIndex = this.scoreList.findIndex(score => score.user === userScore.user);
+            if (scoreIndex !== -1) {
+                this.scoreList[scoreIndex] = userScore;
+            } else {
+                this.scoreList.push(userScore);
+            }
+        }
     },
 }
 </script>

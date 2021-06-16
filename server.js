@@ -29,8 +29,6 @@ io.on('connection', (client) => {
   });
 
   client.on('send_score', (score) => {
-    console.log("message");
-    console.log(score);
     io.sockets.emit('broadcast', { user: client.id, score })
   })
 

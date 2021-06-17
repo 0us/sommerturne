@@ -33,16 +33,17 @@
 </template>
 
 <script lang="ts">
-import TurboButton from "@/components/TurboButton"
+import Vue from "vue"
+import TurboButton from "@/components/TurboButton.vue"
 
-export default {
+export default Vue.extend({
     name: "ChillActivityView",
     components: { TurboButton },
     data() {
         return {
             buttonClicked: false,
             showSun: false,
-            currentAudio: null,
+            currentAudio: null as null | HTMLAudioElement,
             coolAudio: [
                 new Audio("fx/chill_fx/beer1.wav"),
                 new Audio("fx/chill_fx/beer2.wav"),
@@ -84,7 +85,7 @@ export default {
             this.showSun = false
         },
     },
-}
+})
 </script>
 
 <style scoped>

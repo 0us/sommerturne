@@ -3,7 +3,7 @@
         <CrazyText
             v-if="showCrazyText"
             :msg="currentCrazyText"
-            level="2"
+            :level="getCrazyLevel()"
             class="floating-text"
         />
         <div class="bowling-bane">
@@ -51,28 +51,36 @@
     </div>
 </template>
 
-<script>
-import Explosion from '@/components/Explosion.vue'
-import { eventHub } from '../main'
-import TurboButton from '@/components/TurboButton.vue'
-import CrazyText from '@/components/CrazyText.vue'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
+<script lang="ts">
+import Explosion from "@/components/Explosion.vue"
+import { eventHub } from "../main"
+import TurboButton from "@/components/TurboButton.vue"
+import CrazyText from "@/components/CrazyText.vue"
+import VueSlider from "vue-slider-component"
+import "vue-slider-component/theme/antd.css"
+import Vue from "vue"
+import { killstreaks } from "@/data/Killstreaks"
+// eslint-disable-next-line no-undef
+import Timeout = NodeJS.Timeout
 
 const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 
-const KILL_COUNT_MAX = 10
+interface BroadcastMessage {
+    user: string
+    score: string
+}
 
-export default {
+export default Vue.extend({
     sockets: {
-        connect: function () {
-            console.log('socket connected')
+        connect: function() {
+            console.log("socket connected")
         },
-        broadcast: function (message) {
-            this.updateUserScore(message);
-        }
+        broadcast: function(message: BroadcastMessage) {
+            // @ts-ignore
+            this.updateUserScore(message)
+        },
     },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
@@ -81,37 +89,23 @@ export default {
         return {
             showBowling: false,
             showCrazyText: false,
-            currentCrazyText: '',
+            currentCrazyText: "",
             kjegleIsKill: false,
             kjegleStartPos: 0,
             killCount: 0,
-            fxKillStreakSounds: {
-                1: new Audio('fx/head_shot.mp3'),
-                2: new Audio('fx/double_kill.mp3'),
-                3: new Audio('fx/triple_kill.mp3'),
-                4: new Audio('fx/multi_kill.mp3'),
-                5: new Audio('fx/monster_kill.mp3'),
-                10: new Audio('fx/god_like.mp3'),
-            },
-            crazyTexts: {
-                1: 'Head Shot!',
-                2: 'Double Kill!',
-                3: 'Triple Kill!',
-                4: 'Multi Kill!',
-                5: 'Monster Kill!',
-                10: 'God Like!',
-                n: 'Ha en fortsatt fin sommer!',
-            },
+            crazyLevel: 0,
+            crazyTimeout: null as Timeout | null,
+            killstreaks,
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
-            scoreList: [],
+            scoreList: new Array<BroadcastMessage>(),
         }
     },
     created() {
-        window.addEventListener('resize', this.handleScreenResize)
+        window.addEventListener("resize", this.handleScreenResize)
     },
     destroyed() {
-        window.removeEventListener('resize', this.handleScreenResize)
+        window.removeEventListener("resize", this.handleScreenResize)
     },
     methods: {
         handleScreenResize() {
@@ -120,7 +114,7 @@ export default {
             this.sliderHeight = screenWidth <= 600 ? 50 : 150
         },
         explode() {
-            eventHub.$emit('explosion')
+            eventHub.$emit("explosion")
         },
         bowl() {
             this.showBowling = true
@@ -131,9 +125,13 @@ export default {
                 const pos = this.getBallPos() + IMG_SIZE
 
                 if (pos >= this.kjegleStartPos) {
-                    if (locked === false) {
+                    if (!locked) {
                         locked = true
                         this.killKjegle()
+                        this.$socket.emit(
+                            "send_score",
+                            this.killCount.toString()
+                        )
 
                         setTimeout(() => {
                             this.cleanupBowling(intervalId)
@@ -143,52 +141,84 @@ export default {
             }, 60)
         },
         getBallPos() {
-            return this.$refs.bowlingBall.offsetLeft
+            let pos = 0
+            try {
+                // @ts-ignore
+                pos = this.$refs.bowlingBall.offsetLeft
+            } catch (e) {
+                //
+            }
+            return pos
         },
         killKjegle() {
+            this.killCount++
             this.kjegleIsKill = true
             this.playBowlingPinSound()
             this.explode()
         },
         async playBowlingPinSound() {
-            new Audio('fx/bowling_pins.mp3').play()
+            await new Audio("fx/bowling_pins.mp3").play()
         },
-        cleanupBowling(intervalId) {
+        cleanupBowling(intervalId: any | null) {
+            const killstreak = this.killstreaks.get(this.killCount)
+
             this.showBowling = false
             this.kjegleIsKill = false
-            this.killCount++
-            this.$socket.emit('send_score', this.killCount.toString())
 
             // Show crazyText
             this.showCrazyText = true
-            this.currentCrazyText = this.crazyTexts[this.killCount]
-            if (this.killCount > KILL_COUNT_MAX) {
-                this.currentCrazyText = this.crazyTexts['n']
-            }
-            setTimeout(() => {
-                this.showCrazyText = false
-                this.currentCrazyText = ''
-            }, CRAZY_TEXT_DURATION)
+            this.currentCrazyText = killstreak.crazyText
+
+            this.clearCrazyText()
 
             // If killstreak is achieved, play sound
-            const fx = this.fxKillStreakSounds[this.killCount]
-            if (fx) fx.play()
+            killstreak.audio?.play()
 
-            clearInterval(intervalId)
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
+        },
+        clearCrazyText() {
+            if (this.crazyTimeout) {
+                clearTimeout(this.crazyTimeout)
+            }
+            this.crazyTimeout = setTimeout(() => {
+                this.showCrazyText = false
+                this.currentCrazyText = ""
+                this.crazyTimeout = null
+            }, CRAZY_TEXT_DURATION)
         },
         calcBowlingAnimation() {
             return `animation: move_left_to_right ${this.bowlingAnimationDuration}ms linear forwards, spin 2s;`
         },
-        updateUserScore(userScore) {
-            const scoreIndex = this.scoreList.findIndex(score => score.user === userScore.user);
+        updateUserScore(userScore: BroadcastMessage) {
+            const scoreIndex = this.scoreList.findIndex(
+                score => score.user === userScore.user
+            )
             if (scoreIndex !== -1) {
-                this.scoreList[scoreIndex] = userScore;
+                this.scoreList[scoreIndex] = userScore
             } else {
-                this.scoreList.push(userScore);
+                this.scoreList.push(userScore)
             }
-        }
+        },
+        getCrazyLevel() {
+            const kills = this.killCount
+            if (kills == 1) this.crazyLevel = 2
+            else if (kills == 2) {
+                this.crazyLevel = 3
+            } else if (kills == 3) {
+                this.crazyLevel = 4
+            } else if (kills == 5) {
+                this.crazyLevel = 5
+            } else if (kills == 10) {
+                this.crazyLevel = 6
+            } else if (kills >= this.killstreaks.KILL_COUNT_MAX) {
+                this.crazyLevel = 1
+            }
+            return this.crazyLevel
+        },
     },
-}
+})
 </script>
 
 <style scoped>

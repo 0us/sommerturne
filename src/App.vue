@@ -1,9 +1,9 @@
 <template>
     <Background id="app" style="z-index: -10">
         <div class="turbo-nav flex flex-row">
-          <NavButton src="house.png" path="/"/>
-          <NavButton src="bowling.png" path="onion_activity"/>
-          <NavButton src="chill.png" path="chill_activity"/>
+            <NavButton src="house.png" path="/" />
+            <NavButton src="bowling.png" path="onion_activity" />
+            <NavButton src="chill.png" path="chill_activity" />
         </div>
         <Content>
             <Boombox />
@@ -13,25 +13,26 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Background from '@/components/Background.vue'
-import Content from '@/components/Content.vue'
-import Boombox from '@/components/Boombox.vue'
-import NavButton from "@/components/NavButton.vue";
-import VueSocketIO from 'vue-socket.io';
+import Vue from "vue"
+import Background from "@/components/Background.vue"
+import Content from "@/components/Content.vue"
+import Boombox from "@/components/Boombox.vue"
+import NavButton from "@/components/NavButton.vue"
+import VueSocketIO from "vue-socket.io"
 
-const url = `${window.location.protocol}//${window.location.hostname}`;
-const port = window.location.port === "8080" ? 5000 : "";
+const url = `${window.location.protocol}//${window.location.hostname}`
 
-Vue.use(new VueSocketIO({
-    debug: false,
-    connection: `${url}:${port}`
-}));
+Vue.use(
+    new VueSocketIO({
+        debug: false,
+        connection: `${url}`,
+    })
+)
 
 export default Vue.extend({
-    name: 'App',
+    name: "App",
     components: {
-      NavButton,
+        NavButton,
         Background,
         Boombox,
         Content,
@@ -40,8 +41,8 @@ export default Vue.extend({
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
-@import './styles/main.css';
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap");
+@import "./styles/main.css";
 
 #app {
     font-family: Inter, sans-serif;

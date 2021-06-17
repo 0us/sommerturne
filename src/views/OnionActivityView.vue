@@ -128,6 +128,10 @@ export default Vue.extend({
                     if (!locked) {
                         locked = true
                         this.killKjegle()
+                        this.$socket.emit(
+                            "send_score",
+                            this.killCount.toString()
+                        )
 
                         setTimeout(() => {
                             this.cleanupBowling(intervalId)
@@ -155,12 +159,11 @@ export default Vue.extend({
         async playBowlingPinSound() {
             await new Audio("fx/bowling_pins.mp3").play()
         },
-        cleanupBowling(intervalId: any) {
+        cleanupBowling(intervalId: any | null) {
             const killstreak = this.killstreaks.get(this.killCount)
 
             this.showBowling = false
             this.kjegleIsKill = false
-            this.$socket.emit("send_score", this.killCount.toString())
 
             // Show crazyText
             this.showCrazyText = true
@@ -171,7 +174,9 @@ export default Vue.extend({
             // If killstreak is achieved, play sound
             killstreak.audio?.play()
 
-            clearInterval(intervalId)
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
         },
         clearCrazyText() {
             if (this.crazyTimeout) {

@@ -5,6 +5,8 @@ import history from "connect-history-api-fallback"
 import express from "express"
 
 const port = process.env.PORT || 5000
+console.log(port)
+
 const setupExpress = () =>
     express()
         .use(

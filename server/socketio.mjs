@@ -15,6 +15,9 @@ const setupSocketIo = server => {
 
     io.on("connection", client => {
         const name = randomElement(crazyNames)
+
+        console.log("SocketIo - Player " + name + " connected")
+
         client.on("disconnect", () => {
             console.log("User ", client.id, " disconnected")
         })
@@ -35,10 +38,15 @@ const getConfig = server => {
     if (address.port !== process.env.PORT) {
         ioConfig.cors = {
             credentials: true,
-            origin: address,
+            origin: [
+                address.address,
+                "http://localhost:8080",
+                "https://summerturne.herokuapp.com",
+            ],
             methods: ["GET", "POST"],
         }
     }
+    console.log("Starting socketIo with config")
     console.log(ioConfig)
     return ioConfig
 }

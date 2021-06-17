@@ -5,13 +5,15 @@ import history from "connect-history-api-fallback"
 import express from "express"
 
 const port = process.env.PORT || 5000
-const dist = dirname(fileURLToPath(import.meta.url)) + "\\dist"
 
 const setupExpress = () =>
     express()
-        .use(serveStatic(dist))
         .use(
-            // @ts-ignore
+            serveStatic(
+                dirname(dirname(fileURLToPath(import.meta.url))) + "/dist"
+            )
+        )
+        .use(
             history({
                 disableDotRule: true,
                 verbose: true,

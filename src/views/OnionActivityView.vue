@@ -58,6 +58,7 @@ import TurboButton from '@/components/TurboButton.vue'
 import CrazyText from '@/components/CrazyText.vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
+import Vue from "vue";
 
 const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
@@ -65,7 +66,7 @@ const IMG_SIZE = 100
 
 const KILL_COUNT_MAX = 10
 
-export default {
+export default Vue.extend({
     sockets: {
         connect: function () {
             console.log('socket connected')
@@ -188,7 +189,7 @@ export default {
             }
         }
     },
-}
+})
 </script>
 
 <style scoped>

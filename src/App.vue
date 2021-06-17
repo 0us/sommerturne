@@ -22,7 +22,6 @@ import VueSocketIO from "vue-socket.io"
 
 const url = `${window.location.protocol}//${window.location.hostname}`
 
-console.log(window.location.port)
 Vue.use(
     new VueSocketIO({
         debug: false,

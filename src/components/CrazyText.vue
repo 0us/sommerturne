@@ -25,9 +25,6 @@ export default Vue.extend({
         msg: String,
         level: String,
     },
-    data() {
-        return {}
-    },
     methods: {
         getCrazyLevel() {
             return "crazy" + this.level

@@ -34,6 +34,7 @@ const getConfig = server => {
     const ioConfig = {
         allowEIO3: true,
     }
+
     const address = server.address()
     if (address.port !== process.env.PORT) {
         ioConfig.cors = {
@@ -46,8 +47,10 @@ const getConfig = server => {
             methods: ["GET", "POST"],
         }
     }
+
     console.log("Starting socketIo with config")
     console.log(ioConfig)
+
     return ioConfig
 }
 

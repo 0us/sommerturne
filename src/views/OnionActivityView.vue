@@ -60,6 +60,8 @@ import VueSlider from "vue-slider-component"
 import "vue-slider-component/theme/antd.css"
 import Vue from "vue"
 import { killstreaks } from "@/data/Killstreaks"
+// eslint-disable-next-line no-undef
+import Timeout = NodeJS.Timeout
 
 const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
@@ -92,7 +94,7 @@ export default Vue.extend({
             kjegleStartPos: 0,
             killCount: 0,
             crazyLevel: 0,
-            crazyTimeout: null,
+            crazyTimeout: null as Timeout | null,
             killstreaks,
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,

@@ -1,28 +1,29 @@
 <template>
-  <div>
-    <img v-if="show" src="explosion.gif" />
-  </div>
+    <div>
+        <img v-if="show" src="explosion.gif" />
+    </div>
 </template>
 
 <script>
-import { eventHub } from "../main";
+import { eventHub } from "../main"
 
 export default {
-  data() {
-    return {
-      show: false,
-    };
-  },
-  created: function () {
-    eventHub.$on("explosion", this.showExplo);
-  },
-  methods: {
-    showExplo() {
-      this.show = true;
-      setTimeout(() => {
-        this.show = false;
-      }, 1250);
+    data() {
+        return {
+            show: false,
+        }
     },
-  },
-};
+    created: function() {
+        eventHub.$on("explosion", this.showExplo)
+    },
+    methods: {
+        showExplo() {
+            this.show = true
+            setTimeout(() => {
+                eventHub.$emit("explosion-end")
+                this.show = false
+            }, 1250)
+        },
+    },
+}
 </script>

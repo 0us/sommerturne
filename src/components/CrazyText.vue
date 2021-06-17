@@ -3,6 +3,7 @@
         ref="text"
         :class="getCrazyLevel()"
         class="
+      transform-gpu
       hello
       bounce-enter-active
       bg-gradient-to-b
@@ -23,7 +24,7 @@ export default Vue.extend({
     name: "CrazyText",
     props: {
         msg: String,
-        level: String,
+        level: Number,
     },
     methods: {
         getCrazyLevel() {
@@ -109,6 +110,7 @@ export default Vue.extend({
         transform: scale(1) skew(0deg, 0deg);
     }
 }
+
 @keyframes shake-2 {
     0% {
         transform: scale(1);

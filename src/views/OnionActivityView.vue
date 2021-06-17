@@ -10,13 +10,13 @@
             <div v-if="showBowling">
                 <img
                     ref="bowlingBall"
-                    class="bowling-ball"
+                    class="bowling-ball select-none pointer-events-none"
                     src="onion.png"
                     :style="calcBowlingAnimation()"
                 />
                 <img
                     v-if="!kjegleIsKill"
-                    class="bowling-kjegle"
+                    class="bowling-kjegle select-none pointer-events-none boince-in"
                     src="bowling_kjegle.png"
                     alt=""
                 />
@@ -167,12 +167,12 @@ export default Vue.extend({
 
             // Show crazyText
             this.showCrazyText = true
-            this.currentCrazyText = killstreak.crazyText
+            this.currentCrazyText = killstreak?.crazyText
 
             this.clearCrazyText()
 
             // If killstreak is achieved, play sound
-            killstreak.audio?.play()
+            killstreak?.audio?.play()
 
             if (intervalId) {
                 clearInterval(intervalId)
@@ -287,5 +287,28 @@ export default Vue.extend({
     position: fixed;
     width: 100px;
     right: 0;
+}
+
+.boince-in {
+    animation: bounceIn 300ms linear forwards;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) translate3d(0, 0, 0);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.1);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(0.89);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translate3d(0, 0, 0);
+    }
 }
 </style>

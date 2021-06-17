@@ -5,13 +5,17 @@
             v-for="i in new Array(20)"
             :key="i"
         />
-        <CrazyText msg="Det Er Sommer I Hele Verden" level="0" />
+        <CrazyText
+            msg="Det Er Sommer I Hele Verden"
+            level="0"
+            class="select-none "
+        />
     </div>
 </template>
 
 <script>
-import FlyingStuff from '@/components/FlyingStuff.vue'
-import CrazyText from '@/components/CrazyText.vue'
+import FlyingStuff from "@/components/FlyingStuff.vue"
+import CrazyText from "@/components/CrazyText.vue"
 
 export default {
     components: {
@@ -20,7 +24,7 @@ export default {
     },
     data() {
         return {
-            summerThings: ['/onion.png', '/flamingo.png', '/hammer.png'],
+            summerThings: ["/onion.png", "/flamingo.png", "/hammer.png"],
         }
     },
     methods: {
@@ -33,5 +37,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

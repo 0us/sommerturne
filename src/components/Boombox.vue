@@ -1,6 +1,10 @@
 <template>
-    <div class="secret fade-in w-full" style="pointer-events: none !important">
+    <div
+        ref="container"
+        class="secret fade-in w-full transform-gpu transition ease-in-out "
+    >
         <youtube
+            style="pointer-events: none !important"
             :video-id="videoId"
             :player-vars="playerVars"
             ref="youtube"
@@ -10,16 +14,23 @@
             height="0"
             id="boombox"
         />
-        <img src="/boombox.gif" alt="boombox" class="mx-auto relative" />
+        <img
+            ref="img"
+            src="/boombox.gif"
+            alt="boombox"
+            class="transform mx-auto relative transition ease-in-out select-none pointer-events-none"
+        />
     </div>
 </template>
 
 <script>
-export default {
-    name: 'Boombox',
+import Vue from "vue"
+
+export default Vue.extend({
+    name: "Boombox",
     data() {
         return {
-            videoId: 'mEOSy9lysj8',
+            videoId: "mEOSy9lysj8",
             playerVars: {
                 autoplay: 1,
                 controls: 0,
@@ -35,19 +46,15 @@ export default {
     methods: {
         forcePlayVideo() {
             this.player.setVolume(10)
-            setInterval(() => {
-                if (this) {
-                    this.playVideo()
-                }
-            }, 1000)
+            setInterval(this?.playVideo, 5000)
         },
         playVideo() {
-            if (!this.player.isPlaying) {
+            if (this.player && !this.player.isPlaying) {
                 this.player.playVideo()
             }
         },
     },
-}
+})
 </script>
 
 <style scoped>

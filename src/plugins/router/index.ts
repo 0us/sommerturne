@@ -2,6 +2,7 @@ import VueRouter, { RouteConfig } from 'vue-router'
 import OnionActivityView from '../../views/OnionActivityView.vue'
 import ChillActivityView from '../../views/ChillActivityView.vue'
 import TurboView from '../../views/TurboView.vue'
+import OnionMmoView from '../../views/OnionMmoView.vue'
 import PageNotFoundView from '../../views/PageNotFoundView.vue'
 
 const routes: Array<RouteConfig> = [
@@ -18,6 +19,11 @@ const routes: Array<RouteConfig> = [
         path: '/chill_activity',
         name: 'chill_activity',
         component: ChillActivityView,
+    },
+    {
+        path: '/onion_mmo',
+        name: 'onion_mmo',
+        component: OnionMmoView,
     },
     {
         path: '*',

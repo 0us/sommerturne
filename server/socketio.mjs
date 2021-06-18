@@ -50,6 +50,10 @@ const setupSocketIo = server => {
             console.log("User ", client.id, " disconnected")
         })
 
+        client.on("update_position", position => {
+            io.sockets.emit("broadcast_position", { id: client.id, user: username, position })
+        })
+
         client.on("bowling_goal", () => {
             users.find(user => user.username === username).score++
             io.sockets.emit("updated_users", users)
@@ -70,6 +74,7 @@ const setupSocketIo = server => {
         })
 
         console.log("User ", client.id, " connected")
+        client.emit("get_id", client.id)
     })
 }
 

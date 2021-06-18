@@ -3,15 +3,14 @@
         ref="text"
         :class="getCrazyLevel()"
         class="
-      transform-gpu
-      hello
-      bounce-enter-active
-      bg-gradient-to-b
-      bg-clip-text
-      text-transparent
-      from-gray-900
-      to-indigo-600
-"
+            transform-gpu
+            hello
+            bounce-enter-active
+            bg-gradient-to-b bg-clip-text
+            text-transparent
+            from-gray-900
+            to-indigo-600
+        "
     >
         {{ msg }}
     </span>
@@ -67,18 +66,6 @@ export default Vue.extend({
 
 .crazy6 {
     animation: shake-2 0.3s infinite linear;
-}
-
-@keyframes bounce-in {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-    100% {
-        transform: scale(1);
-    }
 }
 
 @keyframes shake {

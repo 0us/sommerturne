@@ -16,7 +16,12 @@
                 />
                 <img
                     v-if="!kjegleIsKill"
-                    class="bowling-kjegle select-none pointer-events-none boince-in"
+                    class="
+                        bowling-kjegle
+                        select-none
+                        pointer-events-none
+                        boince-in
+                    "
                     src="bowling_kjegle.png"
                     alt=""
                 />
@@ -24,15 +29,7 @@
             </div>
         </div>
 
-        <div v-for="score in scoreList" :key="score.user">
-            <p>{{ score.user }}: {{ score.score }} kills</p>
-        </div>
-
         <div class="bottom-container">
-            <div class="turbo-counter text-white">
-                {{ killCount }}
-            </div>
-
             <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
 
             <div class="turbo-slider-container text-white">
@@ -67,21 +64,7 @@ const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 
-interface BroadcastMessage {
-    user: string
-    score: string
-}
-
 export default Vue.extend({
-    sockets: {
-        connect: function() {
-            console.log("socket connected")
-        },
-        broadcast_bowl: function(message: BroadcastMessage) {
-            // @ts-ignore
-            this.updateUserScore(message)
-        },
-    },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
         const screenWidth = document.body.clientWidth
@@ -98,7 +81,7 @@ export default Vue.extend({
             killstreaks,
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
-            scoreList: new Array<BroadcastMessage>(),
+            username: "",
         }
     },
     created() {
@@ -128,10 +111,9 @@ export default Vue.extend({
                     if (!locked) {
                         locked = true
                         this.killKjegle()
-                        this.$socket.emit(
-                            "send_score",
-                            this.killCount.toString()
-                        )
+                        this.$socket.emit("bowling_goal", {
+                            username: this.username,
+                        })
 
                         setTimeout(() => {
                             this.cleanupBowling(intervalId)
@@ -191,16 +173,6 @@ export default Vue.extend({
         calcBowlingAnimation() {
             return `animation: move_left_to_right ${this.bowlingAnimationDuration}ms linear forwards, spin 2s;`
         },
-        updateUserScore(userScore: BroadcastMessage) {
-            const scoreIndex = this.scoreList.findIndex(
-                score => score.user === userScore.user
-            )
-            if (scoreIndex !== -1) {
-                this.scoreList[scoreIndex] = userScore
-            } else {
-                this.scoreList.push(userScore)
-            }
-        },
         getCrazyLevel() {
             const kills = this.killCount
             if (kills == 1) this.crazyLevel = 2
@@ -241,20 +213,6 @@ export default Vue.extend({
     margin-top: auto;
 }
 
-.turbo-counter {
-    left: 0;
-    position: absolute;
-    margin-left: 2rem;
-    font-size: 5rem;
-}
-
-@media (max-width: 600px) {
-    .turbo-counter {
-        margin-left: 1rem;
-        font-size: 3rem;
-    }
-}
-
 .turbo-slider-container {
     right: 0;
     position: absolute;
@@ -264,11 +222,6 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
     margin-right: 2rem;
-}
-
-@media (max-width: 600px) {
-    .turbo-slider {
-    }
 }
 
 .bowling-bane {
@@ -291,6 +244,12 @@ export default Vue.extend({
 
 .boince-in {
     animation: bounceIn 300ms linear forwards;
+}
+
+.username-text {
+    align-self: center;
+    user-select: none;
+    font-size: 2rem;
 }
 
 @keyframes bounceIn {

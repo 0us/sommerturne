@@ -3,31 +3,70 @@ import { Server as SocketIoServer } from "socket.io"
 const setupSocketIo = server => {
     const io = new SocketIoServer(server, getConfig(server))
 
-    const crazyNames = [
-        "Bjarne",
-        "Halgeir",
-        "Rufus",
-        "Frans Xavier",
-        "Vanessa",
-        "Idun",
-        "Laura",
+    let users = [
+        {
+            username: "Bjarne",
+            score: 0,
+        },
+        {
+            username: "Halgeir",
+            score: 0,
+        },
+        {
+            username: "Rufus",
+            score: 0,
+        },
+        {
+            username: "Frans Xavier",
+            score: 0,
+        },
+        {
+            username: "Vanessa",
+            score: 0,
+        },
+        {
+            username: "Idun",
+            score: 0,
+        },
+        {
+            username: "Laura",
+            score: 0,
+        },
     ]
 
     io.on("connection", client => {
-        const name = randomElement(crazyNames)
+        const { username } = randomElement(users)
 
-        console.log("SocketIo - Player " + name + " connected")
+        client.on("client_ready", () => {
+            client.emit("init", {
+                username: username,
+                users: users,
+            })
+        })
+
+        console.log("SocketIo - Player " + username + " connected")
 
         client.on("disconnect", () => {
             console.log("User ", client.id, " disconnected")
         })
 
-        client.on("send_score", score => {
-            io.sockets.emit("broadcast_bowl", { user: name, score })
+        client.on("update_position", position => {
+            io.sockets.emit("broadcast_position", { id: client.id, user: username, position })
         })
 
-        client.on("update_position", position => {
-            io.sockets.emit("broadcast_position", { id: client.id, user: name, position })
+        client.on("bowling_goal", () => {
+            users.find(user => user.username === username).score++
+            io.sockets.emit("updated_users", users)
+        })
+
+        client.on("chill", () => {
+            users.find(user => user.username === username).score += 5
+            io.sockets.emit("updated_users", users)
+        })
+
+        client.on("no_chill", () => {
+            users.find(user => user.username === username).score -= 5
+            io.sockets.emit("updated_users", users)
         })
 
         console.log("User ", client.id, " connected")

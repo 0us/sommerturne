@@ -1,24 +1,24 @@
 <template>
-    <NoSelect :style="this.translation" class="transform-gpu select-none">
-        <figure :id="this.id" class="select-none">
-            <img
-                :src="src"
-                class="flying select-none pointer-events-none"
-                alt="FlyingStuff"
-            />
-        </figure>
-    </NoSelect>
+    <figure
+        :id="this.id"
+        class="select-none transform-gpu select-none"
+        :style="this.translation"
+    >
+        <img
+            :src="src"
+            class="flying select-none pointer-events-none"
+            alt="FlyingStuff"
+        />
+    </figure>
 </template>
 
 <script>
-import NoSelect from "@/components/NoSelect"
 import shortid from "shortid"
 
 const tickrate = 1000
 
 export default {
     name: "FlyingStuff",
-    components: { NoSelect },
     props: {
         src: String,
     },

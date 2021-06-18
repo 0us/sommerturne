@@ -19,6 +19,12 @@ const setupExpress = () =>
                 verbose: true,
             })
         )
+        // This is one official JBB warning. Don't remove this @frodeluren ! ! !
+        .use(
+            serveStatic(
+                dirname(dirname(fileURLToPath(import.meta.url))) + "/dist"
+            )
+        )
         .listen(port, () => console.log(`Listening on ${port}`))
 
 export default setupExpress

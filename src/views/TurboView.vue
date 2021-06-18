@@ -7,8 +7,8 @@
         />
         <CrazyText
             msg="Det Er Sommer I Hele Verden"
-            level="0"
-            class="select-none "
+            :level="0"
+            class="select-none"
         />
     </div>
 </template>

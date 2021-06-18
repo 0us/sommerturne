@@ -1,7 +1,7 @@
 <template>
-    <div class="onion-field">
+    <div class="onion-field h-full">
         <div v-for="position in positionList" :key="position.id">
-            <img :id="position.id" class="w-10 fixed relative" src="onion.png" :style="getPostion(position.id)">
+            <img :id="position.id" class="w-10 fixed" src="onion.png" :style="getPostion(position.id)">
         </div>
     </div>
 </template>
@@ -59,7 +59,7 @@ export default Vue.extend({
         getPostion(userId: string) {
             const user = this.positionList.find(p => p.id === userId)
             if (user) {
-                return { "bottom": `${user.position.lat}%`, "left": `${user.position.lon}%` }
+                return { "top": `${user.position.lat}%`, "left": `${user.position.lon}%` }
             }
         },
         getUserInfo(userId: string) {

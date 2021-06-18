@@ -1,7 +1,10 @@
 <template>
     <div class="onion-field h-full">
         <div v-for="position in positionList" :key="position.id">
-            <img :id="position.id" class="w-10 fixed" src="onion.png" :style="getPostion(position.id)">
+            <div :id="position.id" class="w-10 fixed" :style="getPostion(position.id)">
+                <img src="onion.png" >
+                <p>{{ position.user }}</p>
+            </div>
         </div>
     </div>
 </template>

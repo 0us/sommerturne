@@ -28,7 +28,7 @@ import Content from "@/components/global/Content.vue"
 import Boombox from "@/components/global/Boombox.vue"
 import NavButton from "@/components/global/NavButton.vue"
 import VueSocketIO from "vue-socket.io"
-import ScoreList from "./components/ScoreList.vue"
+import ScoreList from "./components/global/ScoreList.vue"
 import CrazyText from "./components/CrazyText.vue"
 
 const SOCKET_URL =
@@ -62,12 +62,12 @@ export default Vue.extend({
     mounted() {
         this.$socket.emit("connection")
         this.$socket.emit("client_ready")
-        this.sockets.subscribe("init", (payload) => {
+        this.sockets.subscribe("init", payload => {
             this.username = payload.username
             this.users = payload.users
         })
 
-        this.sockets.subscribe("updated_users", (users) => {
+        this.sockets.subscribe("updated_users", users => {
             this.users = users
         })
     },

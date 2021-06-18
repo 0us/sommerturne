@@ -4,12 +4,14 @@
         :class="getCrazyLevel()"
         class="
             transform-gpu
+            select-none
             hello
             bounce-enter-active
             bg-gradient-to-b bg-clip-text
             text-transparent
             from-gray-900
             to-indigo-600
+            relative
         "
     >
         {{ msg }}

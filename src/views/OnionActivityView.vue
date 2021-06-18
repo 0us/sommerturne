@@ -121,6 +121,7 @@ export default Vue.extend({
         window.addEventListener("resize", this.handleScreenResize)
     },
     mounted() {
+        this.$socket.emit("client_ready")
         this.sockets.subscribe("init", (payload) => {
             this.username = payload.username
             this.users = payload.users

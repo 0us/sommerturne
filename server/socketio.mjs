@@ -37,9 +37,11 @@ const setupSocketIo = server => {
     io.on("connection", client => {
         const { username } = randomElement(users)
 
-        client.emit("init", {
-            username: username,
-            users: users,
+        client.on("client_ready", () => {
+            client.emit("init", {
+                username: username,
+                users: users,
+            })
         })
 
         console.log("SocketIo - Player " + username + " connected")

@@ -55,8 +55,6 @@ export default Vue.extend({
             } else {
                 this.positionList.push(userPosition)
             }
-            console.log(this.positionList);
-            this.positionList
             this.$forceUpdate();
         },
         getPostion(userId: string) {

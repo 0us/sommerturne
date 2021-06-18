@@ -16,7 +16,12 @@
                 />
                 <img
                     v-if="!kjegleIsKill"
-                    class="bowling-kjegle select-none pointer-events-none boince-in"
+                    class="
+                        bowling-kjegle
+                        select-none
+                        pointer-events-none
+                        boince-in
+                    "
                     src="bowling_kjegle.png"
                     alt=""
                 />
@@ -29,8 +34,17 @@
         </div>
 
         <div class="bottom-container">
-            <div class="turbo-counter text-white">
-                {{ killCount }}
+            <div class="bottom-container-left text-white">
+                <ul class="turbo-list">
+                    <li v-for="user in users" :key="user.username">
+                        {{ user.username + ": " + user.score }}
+                    </li>
+                </ul>
+                <CrazyText
+                    :msg="'Username: ' + username"
+                    :level="0"
+                    class="username-text ml-10"
+                />
             </div>
 
             <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
@@ -74,10 +88,10 @@ interface BroadcastMessage {
 
 export default Vue.extend({
     sockets: {
-        connect: function() {
+        connect: function () {
             console.log("socket connected")
         },
-        broadcast: function(message: BroadcastMessage) {
+        broadcast: function (message: BroadcastMessage) {
             // @ts-ignore
             this.updateUserScore(message)
         },
@@ -99,10 +113,21 @@ export default Vue.extend({
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
             scoreList: new Array<BroadcastMessage>(),
+            username: "",
+            users: [],
         }
     },
     created() {
         window.addEventListener("resize", this.handleScreenResize)
+    },
+    mounted() {
+        this.sockets.subscribe("init", (payload) => {
+            this.username = payload.username
+            this.users = payload.users
+        })
+        this.sockets.subscribe("updated_users", (users) => {
+            this.users = users
+        })
     },
     destroyed() {
         window.removeEventListener("resize", this.handleScreenResize)
@@ -128,10 +153,9 @@ export default Vue.extend({
                     if (!locked) {
                         locked = true
                         this.killKjegle()
-                        this.$socket.emit(
-                            "send_score",
-                            this.killCount.toString()
-                        )
+                        this.$socket.emit("bowling_goal", {
+                            username: this.username,
+                        })
 
                         setTimeout(() => {
                             this.cleanupBowling(intervalId)
@@ -193,7 +217,7 @@ export default Vue.extend({
         },
         updateUserScore(userScore: BroadcastMessage) {
             const scoreIndex = this.scoreList.findIndex(
-                score => score.user === userScore.user
+                (score) => score.user === userScore.user
             )
             if (scoreIndex !== -1) {
                 this.scoreList[scoreIndex] = userScore
@@ -241,17 +265,16 @@ export default Vue.extend({
     margin-top: auto;
 }
 
-.turbo-counter {
+.bottom-container-left {
     left: 0;
     position: absolute;
     margin-left: 2rem;
-    font-size: 5rem;
+    display: flex;
 }
 
 @media (max-width: 600px) {
-    .turbo-counter {
+    .turbo-list {
         margin-left: 1rem;
-        font-size: 3rem;
     }
 }
 
@@ -264,11 +287,6 @@ export default Vue.extend({
     justify-content: center;
     align-items: center;
     margin-right: 2rem;
-}
-
-@media (max-width: 600px) {
-    .turbo-slider {
-    }
 }
 
 .bowling-bane {
@@ -291,6 +309,12 @@ export default Vue.extend({
 
 .boince-in {
     animation: bounceIn 300ms linear forwards;
+}
+
+.username-text {
+    align-self: center;
+    user-select: none;
+    font-size: 2rem;
 }
 
 @keyframes bounceIn {

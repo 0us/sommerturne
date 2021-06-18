@@ -20,12 +20,15 @@ import Boombox from "@/components/Boombox.vue"
 import NavButton from "@/components/NavButton.vue"
 import VueSocketIO from "vue-socket.io"
 
-const url = `${window.location.protocol}//${window.location.hostname}`
+const SOCKET_URL =
+    window.location.hostname === "localhost"
+        ? window.location.protocol + "//" + window.location.hostname + ":5000"
+        : window.location.protocol + "//" + window.location.hostname
 
 Vue.use(
     new VueSocketIO({
         debug: false,
-        connection: `${url}`,
+        connection: `${SOCKET_URL}`,
     })
 )
 

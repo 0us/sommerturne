@@ -77,7 +77,7 @@ export default Vue.extend({
         connect: function() {
             console.log("socket connected")
         },
-        broadcast: function(message: BroadcastMessage) {
+        broadcast_bowl: function(message: BroadcastMessage) {
             // @ts-ignore
             this.updateUserScore(message)
         },

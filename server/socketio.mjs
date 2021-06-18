@@ -23,10 +23,15 @@ const setupSocketIo = server => {
         })
 
         client.on("send_score", score => {
-            io.sockets.emit("broadcast", { user: name, score })
+            io.sockets.emit("broadcast_bowl", { user: name, score })
+        })
+
+        client.on("update_position", position => {
+            io.sockets.emit("broadcast_position", { id: client.id, user: name, position })
         })
 
         console.log("User ", client.id, " connected")
+        client.emit("get_id", client.id)
     })
 }
 

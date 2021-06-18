@@ -4,6 +4,7 @@
             <NavButton src="house.png" path="/" />
             <NavButton src="bowling.png" path="onion_activity" />
             <NavButton src="chill.png" path="chill_activity" />
+            <NavButton src="chill.png" path="onion_mmo" />
         </div>
         <Content>
             <Boombox />

@@ -29,10 +29,6 @@
             </div>
         </div>
 
-        <div v-for="score in scoreList" :key="score.user">
-            <p>{{ score.user }}: {{ score.score }} kills</p>
-        </div>
-
         <div class="bottom-container">
             <div class="bottom-container-left text-white">
                 <ul class="turbo-list">
@@ -81,19 +77,10 @@ const ANIMATION_DURATION = 500
 const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 
-interface BroadcastMessage {
-    user: string
-    score: string
-}
-
 export default Vue.extend({
     sockets: {
         connect: function () {
             console.log("socket connected")
-        },
-        broadcast: function (message: BroadcastMessage) {
-            // @ts-ignore
-            this.updateUserScore(message)
         },
     },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
@@ -112,7 +99,6 @@ export default Vue.extend({
             killstreaks,
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
-            scoreList: new Array<BroadcastMessage>(),
             username: "",
             users: [],
         }
@@ -215,16 +201,6 @@ export default Vue.extend({
         },
         calcBowlingAnimation() {
             return `animation: move_left_to_right ${this.bowlingAnimationDuration}ms linear forwards, spin 2s;`
-        },
-        updateUserScore(userScore: BroadcastMessage) {
-            const scoreIndex = this.scoreList.findIndex(
-                (score) => score.user === userScore.user
-            )
-            if (scoreIndex !== -1) {
-                this.scoreList[scoreIndex] = userScore
-            } else {
-                this.scoreList.push(userScore)
-            }
         },
         getCrazyLevel() {
             const kills = this.killCount

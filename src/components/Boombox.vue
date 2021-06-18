@@ -1,7 +1,7 @@
 <template>
     <div
         ref="container"
-        class="secret fade-in w-full transform-gpu transition ease-in-out "
+        class="secret fade-in transform-gpu transition ease-in-out"
     >
         <youtube
             style="pointer-events: none !important"
@@ -18,7 +18,15 @@
             ref="img"
             src="/boombox.gif"
             alt="boombox"
-            class="transform mx-auto relative transition ease-in-out select-none pointer-events-none"
+            class="
+                transform
+                mx-auto
+                relative
+                transition
+                ease-in-out
+                select-none
+                pointer-events-none
+            "
         />
     </div>
 </template>

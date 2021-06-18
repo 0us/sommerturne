@@ -30,19 +30,6 @@
         </div>
 
         <div class="bottom-container">
-            <div class="bottom-container-left text-white">
-                <ul class="turbo-list">
-                    <li v-for="user in users" :key="user.username">
-                        {{ user.username + ": " + user.score }}
-                    </li>
-                </ul>
-                <CrazyText
-                    :msg="'Username: ' + username"
-                    :level="0"
-                    class="username-text ml-10"
-                />
-            </div>
-
             <TurboButton title="Bowl" :action="bowl" :disabled="showBowling" />
 
             <div class="turbo-slider-container text-white">
@@ -78,11 +65,6 @@ const CRAZY_TEXT_DURATION = 1500
 const IMG_SIZE = 100
 
 export default Vue.extend({
-    sockets: {
-        connect: function () {
-            console.log("socket connected")
-        },
-    },
     components: { Explosion, TurboButton, CrazyText, VueSlider },
     data() {
         const screenWidth = document.body.clientWidth
@@ -100,21 +82,10 @@ export default Vue.extend({
             bowlingAnimationDuration: 2000,
             sliderHeight: screenWidth <= 600 ? 75 : 150,
             username: "",
-            users: [],
         }
     },
     created() {
         window.addEventListener("resize", this.handleScreenResize)
-    },
-    mounted() {
-        this.$socket.emit("client_ready")
-        this.sockets.subscribe("init", (payload) => {
-            this.username = payload.username
-            this.users = payload.users
-        })
-        this.sockets.subscribe("updated_users", (users) => {
-            this.users = users
-        })
     },
     destroyed() {
         window.removeEventListener("resize", this.handleScreenResize)
@@ -240,19 +211,6 @@ export default Vue.extend({
     align-items: center;
     margin-bottom: 2rem;
     margin-top: auto;
-}
-
-.bottom-container-left {
-    left: 0;
-    position: absolute;
-    margin-left: 2rem;
-    display: flex;
-}
-
-@media (max-width: 600px) {
-    .turbo-list {
-        margin-left: 1rem;
-    }
 }
 
 .turbo-slider-container {

@@ -1,12 +1,12 @@
 <template>
     <div class="turbo-container w-full h-full text-center z-50">
-        <slot> </slot>
+        <slot></slot>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'Content',
+    name: "Content",
 }
 </script>
 

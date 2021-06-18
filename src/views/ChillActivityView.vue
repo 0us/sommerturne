@@ -3,7 +3,15 @@
         <img
             :src="currentMascot"
             :v-if="showMascot"
-            class="spin absolute top-12 right-12 w-40 select-none pointer-events-none"
+            class="
+                spin
+                absolute
+                top-12
+                right-12
+                w-40
+                select-none
+                pointer-events-none
+            "
         />
 
         <div class="bottom-container">
@@ -22,11 +30,23 @@
 
         <div class="bottom-container">
             <div
-                class="transition ease-in-out duration-1000 transform hover:scale-105"
+                class="
+                    transition
+                    ease-in-out
+                    duration-1000
+                    transform
+                    hover:scale-105
+                "
             >
                 <img
                     src="palme.webp"
-                    class="w-auto flex-shrink h-64 select-none pointer-events-none"
+                    class="
+                        w-auto
+                        flex-shrink
+                        h-64
+                        select-none
+                        pointer-events-none
+                    "
                 />
             </div>
 
@@ -39,7 +59,13 @@
             <div class="transition ease-in-out transform hover:scale-105">
                 <img
                     src="palme.webp"
-                    class="w-auto flex-shrink  h-64 select-none pointer-events-none"
+                    class="
+                        w-auto
+                        flex-shrink
+                        h-64
+                        select-none
+                        pointer-events-none
+                    "
                 />
             </div>
         </div>
@@ -78,18 +104,18 @@ export default Vue.extend({
         }
     },
     mounted() {
-        this.coolAudio.forEach(audio => {
+        this.coolAudio.forEach((audio) => {
             audio.addEventListener("ended", this.disableMascot)
         })
-        this.unCoolAudio.forEach(audio => {
+        this.unCoolAudio.forEach((audio) => {
             audio.addEventListener("ended", this.disableMascot)
         })
     },
     beforeDestroy() {
-        this.coolAudio.forEach(audio => {
+        this.coolAudio.forEach((audio) => {
             audio.removeEventListener("ended", this.disableMascot)
         })
-        this.unCoolAudio.forEach(audio => {
+        this.unCoolAudio.forEach((audio) => {
             audio.removeEventListener("ended", this.disableMascot)
         })
     },
@@ -106,8 +132,6 @@ export default Vue.extend({
                 this.showMascot = true
                 this.currentAudio.play()
             }
-
-            this.$socket.emit()
         },
         chillOrNoChill() {
             const chill = Math.random() < 0.5
@@ -116,7 +140,8 @@ export default Vue.extend({
             this.currentAudio = this.randomElement(
                 chill ? this.coolAudio : this.unCoolAudio
             )
-            this.$socket.emit(chill ? "chill" : "no-chill")
+
+            this.$socket.emit(chill ? "chill" : "no_chill")
 
             this.chill = chill
         },

@@ -1,47 +1,30 @@
 <template>
     <div class="bowling-container">
-        <img
-            :src="currentMascot"
-            :v-if="showMascot"
-            class="spin absolute top-12 right-12 w-40 select-none pointer-events-none"
-        />
-
-        <div class="bottom-container">
+        <div class="bottom-container flex flex-initial">
+            <Mascot :src="currentMascot" v-if="showMascot" />
             <BrazyText
                 v-if="showMascot && !chill"
-                :msg="-5"
+                msg="-5"
                 style="font-size: 8rem"
+                class="flex flex-initial"
             ></BrazyText>
             <CrazyText
                 v-if="showMascot && chill"
                 msg="+5"
-                level="3"
+                :level="3"
                 style="font-size: 8rem"
+                class="flex flex-initial"
             ></CrazyText>
         </div>
 
         <div class="bottom-container">
-            <div
-                class="transition ease-in-out duration-1000 transform hover:scale-105"
-            >
-                <img
-                    src="palme.webp"
-                    class="w-auto flex-shrink h-64 select-none pointer-events-none"
-                />
-            </div>
-
+            <Palme />
             <TurboButton
                 title="Chill?"
                 :action="onGamble"
                 :disabled="showMascot"
             ></TurboButton>
-
-            <div class="transition ease-in-out transform hover:scale-105">
-                <img
-                    src="palme.webp"
-                    class="w-auto flex-shrink  h-64 select-none pointer-events-none"
-                />
-            </div>
+            <Palme />
         </div>
     </div>
 </template>
@@ -51,10 +34,12 @@ import Vue from "vue"
 import TurboButton from "@/components/TurboButton.vue"
 import BrazyText from "@/components/BrazyText.vue"
 import CrazyText from "@/components/CrazyText.vue"
+import Palme from "@/components/environment/Palme.vue"
+import Mascot from "@/components/environment/Mascot.vue"
 
 export default Vue.extend({
     name: "ChillActivityView",
-    components: { CrazyText, BrazyText, TurboButton },
+    components: { Mascot, Palme, CrazyText, BrazyText, TurboButton },
     data() {
         return {
             chill: false,
@@ -78,18 +63,18 @@ export default Vue.extend({
         }
     },
     mounted() {
-        this.coolAudio.forEach(audio => {
+        this.coolAudio.forEach((audio) => {
             audio.addEventListener("ended", this.disableMascot)
         })
-        this.unCoolAudio.forEach(audio => {
+        this.unCoolAudio.forEach((audio) => {
             audio.addEventListener("ended", this.disableMascot)
         })
     },
     beforeDestroy() {
-        this.coolAudio.forEach(audio => {
+        this.coolAudio.forEach((audio) => {
             audio.removeEventListener("ended", this.disableMascot)
         })
-        this.unCoolAudio.forEach(audio => {
+        this.unCoolAudio.forEach((audio) => {
             audio.removeEventListener("ended", this.disableMascot)
         })
     },
@@ -106,8 +91,6 @@ export default Vue.extend({
                 this.showMascot = true
                 this.currentAudio.play()
             }
-
-            this.$socket.emit()
         },
         chillOrNoChill() {
             const chill = Math.random() < 0.5
@@ -116,7 +99,8 @@ export default Vue.extend({
             this.currentAudio = this.randomElement(
                 chill ? this.coolAudio : this.unCoolAudio
             )
-            this.$socket.emit(chill ? "chill" : "no-chill")
+
+            this.$socket.emit(chill ? "chill" : "no_chill")
 
             this.chill = chill
         },

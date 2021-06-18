@@ -11,6 +11,7 @@
       from-gray-900
       to-red-700
       select-none
+      relative
       "
     >
         {{ msg }}

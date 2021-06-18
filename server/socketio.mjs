@@ -69,6 +69,10 @@ const setupSocketIo = server => {
             io.sockets.emit("updated_users", users)
         })
 
+        client.on("error", error => {
+            console.log(error)
+        })
+
         console.log("User ", client.id, " connected")
         client.emit("get_id", client.id)
     })

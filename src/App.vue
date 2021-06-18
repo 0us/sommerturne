@@ -6,7 +6,15 @@
             <NavButton src="chill.png" path="chill_activity" />
         </div>
         <Content>
-            <Boombox />
+            <div class="flex w-full justify-around">
+                <ScoreList class="w-1/5" :users="users" />
+                <Boombox class="w-1/5" />
+                <CrazyText
+                    :msg="'Username: ' + username"
+                    :level="0"
+                    class="username-text w-1/5"
+                />
+            </div>
             <router-view></router-view>
         </Content>
     </Background>
@@ -19,6 +27,8 @@ import Content from "@/components/Content.vue"
 import Boombox from "@/components/Boombox.vue"
 import NavButton from "@/components/NavButton.vue"
 import VueSocketIO from "vue-socket.io"
+import ScoreList from "./components/ScoreList.vue"
+import CrazyText from "./components/CrazyText.vue"
 
 const SOCKET_URL =
     window.location.hostname === "localhost"
@@ -39,6 +49,26 @@ export default Vue.extend({
         Background,
         Boombox,
         Content,
+        ScoreList,
+        CrazyText,
+    },
+    data() {
+        return {
+            username: "",
+            users: [],
+        }
+    },
+    mounted() {
+        this.$socket.emit("connection")
+        this.$socket.emit("client_ready")
+        this.sockets.subscribe("init", (payload) => {
+            this.username = payload.username
+            this.users = payload.users
+        })
+
+        this.sockets.subscribe("updated_users", (users) => {
+            this.users = users
+        })
     },
 })
 </script>

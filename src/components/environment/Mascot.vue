@@ -8,8 +8,11 @@
 <script>
 export default {
     name: "Mascot",
-    params: {
-        src: String,
+    props: {
+        src: {
+            type: String,
+            required: true,
+        },
     },
 }
 </script>

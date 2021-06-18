@@ -55,6 +55,16 @@ const setupSocketIo = server => {
             io.sockets.emit("updated_users", users)
         })
 
+        client.on("chill", () => {
+            users.find(user => user.username === username).score += 5
+            io.sockets.emit("updated_users", users)
+        })
+
+        client.on("no_chill", () => {
+            users.find(user => user.username === username).score -= 5
+            io.sockets.emit("updated_users", users)
+        })
+
         console.log("User ", client.id, " connected")
     })
 }

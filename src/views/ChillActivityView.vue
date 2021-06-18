@@ -1,10 +1,24 @@
 <template>
-    <div class="flex flex-col items-center ">
+    <div class="bowling-container">
         <img
             :src="currentMascot"
-            v-if="showMascot"
+            :v-if="showMascot"
             class="spin absolute top-12 right-12 w-40 select-none pointer-events-none"
         />
+
+        <div class="bottom-container">
+            <BrazyText
+                v-if="showMascot && !chill"
+                :msg="-5"
+                style="font-size: 8rem"
+            ></BrazyText>
+            <CrazyText
+                v-if="showMascot && chill"
+                msg="+5"
+                level="3"
+                style="font-size: 8rem"
+            ></CrazyText>
+        </div>
 
         <div class="bottom-container">
             <div
@@ -35,13 +49,15 @@
 <script lang="ts">
 import Vue from "vue"
 import TurboButton from "@/components/TurboButton.vue"
+import BrazyText from "@/components/BrazyText.vue"
+import CrazyText from "@/components/CrazyText.vue"
 
 export default Vue.extend({
     name: "ChillActivityView",
-    components: { TurboButton },
+    components: { CrazyText, BrazyText, TurboButton },
     data() {
         return {
-            buttonClicked: false,
+            chill: false,
             showMascot: false,
             currentMascot: "sun.png" as "sun.png" | "crow.png",
             currentAudio: null as null | HTMLAudioElement,
@@ -90,6 +106,8 @@ export default Vue.extend({
                 this.showMascot = true
                 this.currentAudio.play()
             }
+
+            this.$socket.emit()
         },
         chillOrNoChill() {
             const chill = Math.random() < 0.5
@@ -98,6 +116,9 @@ export default Vue.extend({
             this.currentAudio = this.randomElement(
                 chill ? this.coolAudio : this.unCoolAudio
             )
+            this.$socket.emit(chill ? "chill" : "no-chill")
+
+            this.chill = chill
         },
 
         disableMascot() {
@@ -118,5 +139,20 @@ export default Vue.extend({
     align-items: center;
     margin-bottom: 2rem;
     margin-top: auto;
+}
+
+.bowling-bane {
+    display: flex;
+    margin-top: 5rem;
+    width: 100%;
+
+    height: 100%;
+}
+
+.bowling-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
 }
 </style>

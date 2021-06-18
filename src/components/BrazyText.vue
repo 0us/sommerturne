@@ -5,35 +5,43 @@
         class="
       transform-gpu
       hello
-      bounce-enter-active
       bg-gradient-to-b
       bg-clip-text
       text-transparent
       from-gray-900
-      to-indigo-600
-"
+      to-red-700
+      select-none
+      "
     >
         {{ msg }}
     </span>
 </template>
 
 <script>
-export default {
+import Vue from "vue"
+
+export default Vue.extend({
     name: "BrazyText",
-}
+    props: {
+        msg: String,
+    },
+    methods: {
+        getBrazyLevel() {},
+    },
+})
 </script>
 
 <style scoped>
 .hello {
     display: inline-block;
-    font-size: 5rem;
-    animation: drop-in 1s ease-in-out;
+    font-size: 3rem;
+    animation: drop-in 1s cubic-bezier(0.18, 0, 1, 0.09);
 }
 
 @keyframes drop-in {
     0% {
         opacity: 0;
-        transform: scale(1.4);
+        transform: scale(5);
     }
     100% {
         opacity: 1;

@@ -1,7 +1,7 @@
 <template>
     <div
         ref="container"
-        class="secret fade-in transform-gpu transition ease-in-out"
+        class="boombox secret fade-in transform-gpu transition ease-in-out"
     >
         <youtube
             style="pointer-events: none !important"
@@ -68,6 +68,11 @@ export default Vue.extend({
 <style scoped>
 .fade-in {
     animation: fadeIn 6s;
+}
+
+.boombox:hover {
+    transform: translateY(-0.125rem) scale(1.05);
+    filter: drop-shadow(0 50px 50px rgba(0, 0, 0, 0.5));
 }
 
 @keyframes fadeIn {

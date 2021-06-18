@@ -22,10 +22,10 @@
 
 <script lang="ts">
 import Vue from "vue"
-import Background from "@/components/Background.vue"
-import Content from "@/components/Content.vue"
-import Boombox from "@/components/Boombox.vue"
-import NavButton from "@/components/NavButton.vue"
+import Background from "@/components/global/Background.vue"
+import Content from "@/components/global/Content.vue"
+import Boombox from "@/components/global/Boombox.vue"
+import NavButton from "@/components/global/NavButton.vue"
 import VueSocketIO from "vue-socket.io"
 import ScoreList from "./components/ScoreList.vue"
 import CrazyText from "./components/CrazyText.vue"

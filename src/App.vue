@@ -1,10 +1,10 @@
 <template>
     <Background id="app" style="z-index: -10">
         <div class="turbo-nav flex flex-row">
-            <NavButton src="house.png" path="/" />
-            <NavButton src="bowling.png" path="onion_activity" />
-            <NavButton src="chill.png" path="chill_activity" />
-            <NavButton src="rsonions.png" path="onion_mmo" />
+            <NavButton src="house.webp" path="/" />
+            <NavButton src="bowling.webp" path="onion_activity" />
+            <NavButton src="chill.webp" path="chill_activity" />
+            <NavButton src="rsonions.webp" path="onion_mmo" />
         </div>
         <Content>
             <div class="flex w-full justify-around">
